@@ -1,0 +1,18 @@
+# Requirements for reproducing the fine-tuning experiment
+# Note: torch with CUDA may need to be installed from the official PyTorch index
+# e.g. on Linux/Windows: pip install --index-url https://download.pytorch.org/whl/cu124 torch==2.5.1+cu124
+
+# core ML / utils
+torch==2.5.1+cu124
+# ultralytics / yolov12 from git (provides the Ultralytics API used in the notebook)
+git+https://github.com/sunsmarterjie/yolov12@main#egg=ultralytics
+roboflow==1.2.11
+numpy==2.0.2
+pandas==2.2.2
+scikit-learn==1.6.1
+opencv-python==4.10.0
+matplotlib==3.10.0
+pyyaml==6.0.3
+tqdm
+
+# (ultralytics/yolov12 is installed above from the git repo)
