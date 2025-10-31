@@ -26,7 +26,6 @@ O modelo **YOLOv12-L** alcançou resultados competitivos e eficiência computaci
 - `README.md`: este arquivo — instruções para reproduzir o experimento.
 - `requirements.txt`: dependências necessárias.
 
-
 ---
 
 ## ⚙️ Instalação e ambiente (Windows - PowerShell)
@@ -73,21 +72,26 @@ labels/    # labels YOLO (.txt)
 meta.yaml
 ```
 
-## 🧩 Divisão dos dados (pré‑processamento)
+## 🧩 Divisão dos dados (pré-processamento)
 
-A divisão por paciente (para evitar data leakage) é feita com `split_check.py` e salva em `./splits`:
+A divisão por paciente (para evitar *data leakage*) é feita com `split_check.py` e salva em `./splits`:
 
 ```powershell
 python split_check.py --csv dataset.csv --out splits --patient_col patient_id
 ```
 
-Ou abra e execute `split_check_usage.ipynb` (ele reproduz as mesmas etapas). Os arquivos gerados serão `train.csv`, `val.csv`, `test.csv` e listas de pacientes por split.
+Ou abra e execute `split_check_usage.ipynb` (ele reproduz as mesmas etapas).
+Os arquivos gerados serão `train.csv`, `val.csv`, `test.csv` e listas de pacientes por split.
 
-Observação: a divisão usada no artigo será disponibilizada em `./splits` ou por link público quando o artigo for publicado.
+> Observação: a divisão usada no artigo será disponibilizada em `./splits` ou por link público quando o artigo for publicado.
 
-### 🧾 Preparar `data.yaml` para treino
+---
 
-Use o utilitário `split_check.organize_yolo(...)` ou a célula correspondente no notebook para copiar imagens/labels para `dataset_yolo/{train,val,test}/{images,labels}` e gerar um `data.yaml`. O utilitário também tenta copiar/ajustar um `meta.yaml` original (removendo placeholders `FILL IN`). Não armazene caminhos absolutos no `data.yaml` do repositório — prefira caminhos relativos.
+## 🧾 Preparar o arquivo `data.yaml` para treino
+
+Use o utilitário `split_check.organize_yolo(...)` ou a célula correspondente no notebook para copiar imagens/labels para `dataset_yolo/{train,val,test}/{images,labels}` e gerar um `data.yaml`.
+O utilitário também tenta copiar/ajustar um `meta.yaml` original (removendo placeholders `FILL IN`).
+Não armazene caminhos absolutos no `data.yaml` do repositório — prefira caminhos relativos.
 
 ```
 dataset_yolo/
@@ -102,29 +106,39 @@ dataset_yolo/
      └── labels/
 ```
 
+---
+
 ## 🚀 Reproduzindo o experimento (treinamento)
 
-Este repositório disponibiliza o pipeline de treino como notebook interativo — `fine-tuning-yolov12.ipynb` — que é a fonte canônica para reproduzir o experimento.
+O pipeline de treino está disponível no notebook interativo `fine-tuning-yolov12.ipynb`, considerado a fonte canônica para reprodução do experimento.
 
-- Abra `fine-tuning-yolov12.ipynb` no Jupyter/VS Code, ajuste as células indicadas (paths, device, epochs, batch) e execute as células na ordem. O notebook contém o código usado no experimento (chamada a `model.train(...)` via Ultralytics API), geração de métricas e plots.
+* Abra o notebook no **Jupyter** ou **VS Code**.
+* Ajuste os parâmetros (paths, device, epochs, batch).
+* Execute as células na ordem.
 
-### Resultados e logs
+Durante o treino:
+
+* O modelo é ajustado via **Ultralytics API** (`model.train(...)`).
+* São geradas métricas, gráficos PR-curves e logs automáticos.
+* Resultados são salvos em `runs/train/<experiment_name>`.
+
+---
+
+## 📊 Resultados e logs
 
 Os resultados do treino (pesos, figuras e métricas) são salvos na pasta criada pelo Ultralytics (ex: `runs/train/<experiment_name>`). No notebook, gráficos PR/curves são gerados e salvos automaticamente.
 
-Tabela de performance (exemplo)
+Tabela de performance
 
-| Model | Test Size |  Param. | FLOPs | F1 Score | AP50val | AP50-95val | Speed |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| YOLOv12 L | 640 | 26.4M | 82.1G | 67.7% | 66.1% | 42.9% | 24.3ms |
+| Model     | Test Size | Params (M) | FLOPs | F1 Score | mAP@50 | mAP@50:95 | Speed  |
+| --------- | --------- | ---------- | ----- | -------- | ------ | --------- | ------ |
+| YOLOv12-L | 640       | 26.4       | 82.1G | 0.677    | 0.661  | 0.429     | 24.3ms |
 
-(Substitua pela tabela final do seu artigo — coloque os números reais do seu experimento aqui.)
-
-Citation
+## 📘 Citação
 
 Se este trabalho for útil para sua pesquisa, considere citar (exemplo):
 
-```
+```bibtex
 @misc{fardin2025wristfractures,
   title        = {Automated Detection of Wrist Fractures using YOLOv12},
   author       = {Fardin, Rodrigo},
@@ -139,6 +153,10 @@ Se este trabalho for útil para sua pesquisa, considere citar (exemplo):
 Contribuições são bem-vindas!
 Algumas melhorias planejadas incluem:
 
--  Implementar benchmarks adicionais (YOLOv13, RF-DERT)
--  Adicionar testes automatizados e checagem de integridade das imagens
+* Implementar benchmarks adicionais (YOLOv13, RF-DERT)
+* Adicionar testes automatizados e checagem de integridade das imagens
+
+> Sugestões e contribuições podem ser feitas via *issues* ou *pull requests*.
+
+---
 
